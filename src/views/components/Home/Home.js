@@ -1,10 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { inject, observer } from "mobx-react";
 
-const Home = props => {
+const Home = (props) => {
+    console.log(props);
     return (
         <div>
-            App Index
+            {`User List ${props.store.users.length}` }
         </div>
     )
 }
@@ -13,4 +15,4 @@ Home.propTypes = {
 
 }
 
-export default Home;
+export default inject('store')(observer(Home));
