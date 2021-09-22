@@ -1,8 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import api from "../../../api";
-import { Form, Input, Button, Checkbox } from 'antd';
-
+import { Form, Input, Button, Checkbox, Layout } from 'antd';
 
 const Login = props => {
 
@@ -24,6 +23,7 @@ const Login = props => {
     
 
   return (
+    <Layout style={{padding: 5}}> 
     <Form
     name="basic"
     labelCol={{ span: 8 }}
@@ -59,6 +59,7 @@ const Login = props => {
       </Button>
     </Form.Item>
   </Form>
+  </Layout>
   );
 };
 
