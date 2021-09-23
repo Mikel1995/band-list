@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack serve",
     "build": "webpack",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "json-server": "json-server --watch user.json"
   },
   "author": "Mikel Kasneci",
   "license": "ISC",

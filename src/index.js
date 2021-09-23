@@ -8,12 +8,10 @@ import Store from "./state/Index";
 import "antd/dist/antd.css";
 
 
-const store = Store.create({
-  users: []
-});
+const store = Store;
 
 ReactDOM.render(
-  <Provider store={store}>
+  <Provider store={Store}>
     <Router history={history}>
       <App />
     </Router>

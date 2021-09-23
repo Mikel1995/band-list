@@ -3,10 +3,9 @@ import PropTypes from 'prop-types'
 import { inject, observer } from "mobx-react";
 
 const Home = (props) => {
-    console.log(props.history);
     return (
         <div>
-            {`User List ${props.store.users.length}` }
+            {`User List ` }
         </div>
     )
 }
