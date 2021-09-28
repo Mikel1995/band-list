@@ -1,27 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import api from "../../../api";
 import { Form, Input, Button, Checkbox, Layout, Row, Col } from "antd";
 import { inject } from "mobx-react";
 import { observer } from "mobx-react-lite";
+import { LOGGED_IN, PENDING_LOGIN } from "../../../constants";
 
-const Login = (props) => {
-  const login = async values => {
-    const { data } = await api.get("http://localhost:3000/users");
-    return data;
-  };
+const Login = props => {
+  const { history  } = props;
+  const { state, login } = props.store.User;
 
   const onFinish = values => {
     login(values);
-    console.log("Success:", values);
   };
 
   const onFinishFailed = errorInfo => {
     console.log("Failed:", errorInfo);
   };
 
+  useEffect(() => {
+    if (state === LOGGED_IN) {
+      history.push('/');
+    }
+  }, [state])
+
   return (
-    <Row style={{paddingTop: '5vh'}}>
+    <Row style={{ paddingTop: "5vh" }}>
       <Col span={12} offset={4}>
         <Form
           name="basic"
@@ -57,8 +60,12 @@ const Login = (props) => {
           </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button type="primary" htmlType="submit">
-              Submit
+            <Button
+              loading={state === PENDING_LOGIN}
+              type="primary"
+              htmlType="submit"
+            >
+              Login
             </Button>
           </Form.Item>
         </Form>
@@ -69,4 +76,4 @@ const Login = (props) => {
 
 Login.propTypes = {};
 
-export default inject('store')(observer(Login));
+export default inject("store")(observer(Login));

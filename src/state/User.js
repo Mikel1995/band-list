@@ -1,9 +1,12 @@
-import { types, flow } from "mobx-state-tree";
+import { types, flow, toGenerator } from "mobx-state-tree";
 import { LOGGED_IN, LOGGED_OUT, PENDING_LOGIN } from "../constants";
+import Login from "../api/Login";
+import history from "../history";
 
 const User = types
   .model("User", {
     username: types.string,
+    photo: types.string,
     state: types.enumeration("State", [LOGGED_IN, LOGGED_OUT, PENDING_LOGIN]),
     loginFailed: false
   })
@@ -19,15 +22,41 @@ const User = types
     }
   }))
   .actions(self => ({
-    login: flow(function* login(creds) {
+    login: flow(function*(creds) {
       self.state = PENDING_LOGIN;
       try {
-        self.username = yield client.login(creds).username;
-        self.state = LOGGED_IN;
+        const response = yield* toGenerator(Login.login(creds));
+        const { data, status } = response;
+        switch (status) {
+          case 200:
+            const loggedUser = data.filter(
+              user =>
+                (user.email === creds.username ||
+                  user.username === creds.username) &&
+                user.password === creds.password
+            );
+            console.log(loggedUser);
+            if (loggedUser.length >= 1) {
+              self.username = loggedUser[0].username;
+              self.photo = loggedUser[0].photo;
+              self.state = LOGGED_IN;
+            }
+            break;
+          default:
+            self.state = LOGGED_OUT;
+            break;
+        }
       } catch (error) {
+        console.log(error);
         self.state = LOGGED_OUT;
         self.loginFailed = true;
       }
-    })
+    }),
+    logOut: () => {
+      self.state = LOGGED_OUT;
+      self.username = "";
+      self.photo = "";
+      return 'test';
+    }
   }));
 export default User;
