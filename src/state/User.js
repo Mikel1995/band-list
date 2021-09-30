@@ -35,7 +35,6 @@ const User = types
                   user.username === creds.username) &&
                 user.password === creds.password
             );
-            console.log(loggedUser);
             if (loggedUser.length >= 1) {
               self.username = loggedUser[0].username;
               self.photo = loggedUser[0].photo;
@@ -54,9 +53,9 @@ const User = types
     }),
     logOut: () => {
       self.state = LOGGED_OUT;
-      self.username = "";
-      self.photo = "";
-      return 'test';
+      // self.username = "";
+      // self.photo = "";
+      // history.go('/login')
     }
   }));
 export default User;

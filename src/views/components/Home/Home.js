@@ -14,4 +14,4 @@ Home.propTypes = {
 
 }
 
-export default inject('store')(observer(Home));
+export default (observer(Home));

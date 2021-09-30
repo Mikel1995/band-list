@@ -1,4 +1,5 @@
 import { types } from "mobx-state-tree";
+import React from "react";
 import { LOGGED_OUT } from "../constants";
 import User from "./User";
 const user = types.model({ users: types.array(User) });
@@ -11,4 +12,4 @@ const Store = {
   })
 };
 
-export default Store;
+export const RootStoreContext = React.createContext(Store);

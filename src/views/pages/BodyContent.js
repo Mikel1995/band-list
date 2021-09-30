@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Avatar, Layout, Menu } from "antd";
 import {
   MenuUnfoldOutlined,
@@ -15,24 +15,27 @@ import SubMenu from "antd/lib/menu/SubMenu";
 import { inject, observer } from "mobx-react";
 import { LOGGED_OUT } from "../../constants";
 import { withRouter } from "react-router";
+import { RootStoreContext } from "../../state/Index";
 
 const { Header, Sider, Content } = Layout;
 
 const BodyContent = (props) => {
-const { content, store, history } = props;
-  const { username, photo, logOut, state } = store.User;
+
+  const rootStore = useContext(RootStoreContext);
+  const { content, history } = props;
+  const { username, photo, logOut, state } = rootStore.User;
 
   const [collapsed, setcollapsed] = useState(false);
   const toggle = () => {
     setcollapsed(!collapsed);
   };
 
-
   useEffect(() => {
+    console.log(' state => ', state);
     if (state === LOGGED_OUT) {
       history.push('/login')
     }
-  }, [store.User])
+  }, [state])
 
 
   return (
@@ -96,4 +99,4 @@ const { content, store, history } = props;
 
 BodyContent.propTypes = {};
 
-export default inject("store")(observer(withRouter(BodyContent)));
+export default (observer(withRouter(BodyContent)));

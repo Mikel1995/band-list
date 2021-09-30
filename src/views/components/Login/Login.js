@@ -1,13 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Form, Input, Button, Checkbox, Layout, Row, Col } from "antd";
 import { inject } from "mobx-react";
 import { observer } from "mobx-react-lite";
 import { LOGGED_IN, PENDING_LOGIN } from "../../../constants";
+import { RootStoreContext } from "../../../state/Index";
 
 const Login = props => {
-  const { history  } = props;
-  const { state, login } = props.store.User;
+
+  const rootStore = useContext(RootStoreContext);
+  const { history } = props;
+  const { state, login } = rootStore.User;
 
   const onFinish = values => {
     login(values);
@@ -76,4 +79,4 @@ const Login = props => {
 
 Login.propTypes = {};
 
-export default inject("store")(observer(Login));
+export default (observer(Login));

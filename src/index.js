@@ -7,15 +7,10 @@ import { Provider } from "mobx-react";
 import Store from "./state/Index";
 import "antd/dist/antd.css";
 
-
-const store = Store;
-
 ReactDOM.render(
-  <Provider store={Store}>
-    <Router history={history}>
-      <App />
-    </Router>
-  </Provider>,
+  <Router history={history}>
+    <App />
+  </Router>,
   document.getElementById("root")
 );
 
