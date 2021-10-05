@@ -39,6 +39,7 @@ const User = types
               self.username = loggedUser[0].username;
               self.photo = loggedUser[0].photo;
               self.state = LOGGED_IN;
+              localStorage.setItem('TOKEN',loggedUser[0].username)
             }
             break;
           default:
@@ -53,9 +54,9 @@ const User = types
     }),
     logOut: () => {
       self.state = LOGGED_OUT;
-      // self.username = "";
-      // self.photo = "";
-      // history.go('/login')
+      self.username = "";
+      self.photo = "";
+      localStorage.removeItem('TOKEN');
     }
   }));
 export default User;

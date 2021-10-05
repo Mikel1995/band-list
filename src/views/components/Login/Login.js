@@ -21,7 +21,7 @@ const Login = props => {
   };
 
   useEffect(() => {
-    if (state === LOGGED_IN) {
+    if (localStorage.getItem('TOKEN') !==null) {
       history.push('/');
     }
   }, [state])

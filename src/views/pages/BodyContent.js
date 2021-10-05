@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import "./BodyContent.css";
 import { Link } from "react-router-dom";
 import SubMenu from "antd/lib/menu/SubMenu";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { LOGGED_OUT } from "../../constants";
 import { withRouter } from "react-router";
 import { RootStoreContext } from "../../state/Index";
@@ -23,7 +23,7 @@ const BodyContent = (props) => {
 
   const rootStore = useContext(RootStoreContext);
   const { content, history } = props;
-  const { username, photo, logOut, state } = rootStore.User;
+  const { username, photo, logOut, state,  } = rootStore.User;
 
   const [collapsed, setcollapsed] = useState(false);
   const toggle = () => {
@@ -31,8 +31,7 @@ const BodyContent = (props) => {
   };
 
   useEffect(() => {
-    console.log(' state => ', state);
-    if (state === LOGGED_OUT) {
+    if (localStorage.getItem('TOKEN')===null) {
       history.push('/login')
     }
   }, [state])
@@ -53,11 +52,11 @@ const BodyContent = (props) => {
               {username}
             </Menu.Item>
             <Menu.Item key="sub-2" icon={<LogoutOutlined />} onClick={()=>{logOut()}}>
-              Logout
+              Logout 
             </Menu.Item>
           </SubMenu>
           <Menu.Item key="1" icon={<UserOutlined />}>
-            Nav 1
+            nav 1
           </Menu.Item>
           <Menu.Item key="2" icon={<VideoCameraOutlined />}>
             nav 2
@@ -99,4 +98,4 @@ const BodyContent = (props) => {
 
 BodyContent.propTypes = {};
 
-export default (observer(withRouter(BodyContent)));
+export default withRouter(observer(BodyContent));
