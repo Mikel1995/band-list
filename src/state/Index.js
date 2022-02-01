@@ -9,7 +9,8 @@ const Store = {
     username: '',
     photo:'',
     loginFailed: false,
-    state: LOGGED_OUT
+    state: LOGGED_OUT,
+    registerError: {}
   }),
   Notification: Notification.create({
     description: "",

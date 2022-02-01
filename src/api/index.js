@@ -15,15 +15,21 @@ axios.interceptors.request.use(
     return config;
   },
   function(error) {
+    console.log(error);
     return Promise.reject(error);
   }
 );
 
 axios.interceptors.response.use(
   function(response) {
+    console.log('response',response);
     return response;
   },
   function(error) {
+    if (error.response.data) {
+      const {errors} = error.response.data;
+      return Promise.reject(errors)
+    }
     return Promise.reject(error);
   }
 );

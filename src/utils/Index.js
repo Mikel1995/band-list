@@ -4,7 +4,5 @@ export const parseErrorMessage = (errorMessage) => {
     errorFields.forEach((fields)=>{
         messageToReturn += `${fields.errors[0]} \n`;
     })
-
     return messageToReturn;
-
 }

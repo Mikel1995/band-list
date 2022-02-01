@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { Form, Input, Button, Checkbox, Row, Col, notification } from "antd";
 import { observer } from "mobx-react-lite";
 import { parseErrorMessage } from "../../../utils/Index";
-import { LOGGED_OUT, PENDING_LOGIN } from "../../../constants";
+import { PENDING_LOGIN } from "../../../constants";
 import { RootStoreContext } from "../../../state/Index";
 
 const Login = (props) => {
@@ -38,11 +38,10 @@ const Login = (props) => {
 
   return (
     <Row style={{ paddingTop: "5vh" }}>
-      <Col span={12} offset={4}>
+      <Col span={12} offset={6}>
         <Form
           name="basic"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
+          layout="vertical"
           initialValues={{ remember: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
@@ -59,7 +58,13 @@ const Login = (props) => {
           <Form.Item
             label="Password"
             name="password"
-            rules={[{ required: true, min: 6 , message: "Please input your password!" }]}
+            rules={[
+              {
+                required: true,
+                min: 6,
+                message: "Please input your password!",
+              },
+            ]}
           >
             <Input.Password />
           </Form.Item>
@@ -67,12 +72,11 @@ const Login = (props) => {
           <Form.Item
             name="remember"
             valuePropName="checked"
-            wrapperCol={{ offset: 8, span: 16 }}
           >
             <Checkbox>Remember me</Checkbox>
           </Form.Item>
 
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Form.Item >
             <Button
               loading={state === PENDING_LOGIN}
               type="primary"
@@ -80,6 +84,16 @@ const Login = (props) => {
             >
               Login
             </Button>
+            <br />
+            Or{" "}
+            <a
+              onClick={() => {
+                history.push("/register");
+              }}
+              href=""
+            >
+              register now!
+            </a>
           </Form.Item>
         </Form>
       </Col>
