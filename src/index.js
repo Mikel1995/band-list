@@ -3,8 +3,6 @@ import ReactDOM from "react-dom";
 import App from "./views/routes";
 import { Router } from "react-router-dom";
 import history from "./history";
-import { Provider } from "mobx-react";
-import Store from "./state/Index";
 import "antd/dist/antd.css";
 
 ReactDOM.render(

@@ -13,7 +13,6 @@ import "./BodyContent.css";
 import { Link } from "react-router-dom";
 import SubMenu from "antd/lib/menu/SubMenu";
 import { observer } from "mobx-react";
-import { LOGGED_OUT } from "../../constants";
 import { withRouter } from "react-router";
 import { RootStoreContext } from "../../state/Index";
 
@@ -23,7 +22,7 @@ const BodyContent = (props) => {
 
   const rootStore = useContext(RootStoreContext);
   const { content, history } = props;
-  const { username, photo, logOut, state,  } = rootStore.User;
+  const { username, photo, logOut, state, getProfile  } = rootStore.User;
 
   const [collapsed, setcollapsed] = useState(false);
   const toggle = () => {
@@ -31,9 +30,11 @@ const BodyContent = (props) => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem('TOKEN')===null) {
+    if (!localStorage.getItem('TOKEN')) {
       history.push('/login')
+      return;
     }
+    getProfile();
   }, [state])
 
 

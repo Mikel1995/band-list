@@ -1,11 +1,13 @@
 import axios from "axios";
 
 axios.create({
-  baseURL: "https://localhost:3000",
+  baseURL: "http://localhost:3000",
   timeout: 10000,
   headers: {
-    "Content-Type": "application/json"
-  }
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*'
+  },
+  
 });
 
 axios.interceptors.request.use(

@@ -1,30 +1,40 @@
 import React, { useContext, useEffect } from "react";
-import PropTypes from "prop-types";
-import { Form, Input, Button, Checkbox, Layout, Row, Col } from "antd";
-import { inject } from "mobx-react";
+import { Form, Input, Button, Checkbox, Row, Col, notification } from "antd";
 import { observer } from "mobx-react-lite";
-import { LOGGED_IN, PENDING_LOGIN } from "../../../constants";
+import { parseErrorMessage } from "../../../utils/Index";
+import { LOGGED_OUT, PENDING_LOGIN } from "../../../constants";
 import { RootStoreContext } from "../../../state/Index";
 
-const Login = props => {
-
+const Login = (props) => {
   const rootStore = useContext(RootStoreContext);
   const { history } = props;
-  const { state, login } = rootStore.User;
+  const { state, login, loginFailed } = rootStore.User;
+  const { openNotification } = rootStore.Notification;
 
-  const onFinish = values => {
+  const onFinish = (values) => {
     login(values);
   };
 
-  const onFinishFailed = errorInfo => {
-    console.log("Failed:", errorInfo);
+  const onFinishFailed = (errorInfo) => {
+    const errorMessage = parseErrorMessage(errorInfo);
+    openNotification("Unable To Login", errorMessage, "error");
   };
 
   useEffect(() => {
-    if (localStorage.getItem('TOKEN') !==null) {
-      history.push('/');
+    if (localStorage.getItem("TOKEN") !== null) {
+      history.push("/");
     }
-  }, [state])
+  }, [state]);
+
+  useEffect(() => {
+    if (loginFailed) {
+      openNotification(
+        "Unable To Login",
+        "Please verify you credencials",
+        "error"
+      );
+    }
+  }, [loginFailed]);
 
   return (
     <Row style={{ paddingTop: "5vh" }}>
@@ -40,8 +50,8 @@ const Login = props => {
         >
           <Form.Item
             label="Username"
-            name="username"
-            rules={[{ required: true, message: "Please input your username!" }]}
+            name="email"
+            rules={[{ required: true, message: "Please input your email!" }]}
           >
             <Input />
           </Form.Item>
@@ -49,7 +59,7 @@ const Login = props => {
           <Form.Item
             label="Password"
             name="password"
-            rules={[{ required: true, message: "Please input your password!" }]}
+            rules={[{ required: true, min: 6 , message: "Please input your password!" }]}
           >
             <Input.Password />
           </Form.Item>
@@ -79,4 +89,4 @@ const Login = props => {
 
 Login.propTypes = {};
 
-export default (observer(Login));
+export default observer(Login);

@@ -1,9 +1,9 @@
 import api from "../api";
 
-const Login = {
-  login: (values) => {
+const UserApi = {
+  getProfile: () => {
     return new Promise((resolve, reject) => {
-      api.post("http://localhost:3000/users/login", values)
+      api.get("http://localhost:3000/users/me", {headers: {'Authorization': `Bearer ${localStorage.getItem('TOKEN')}`}})
         .then((result) => {
           resolve(result);
         })
@@ -14,4 +14,4 @@ const Login = {
   },
 };
 
-export default Login;
+export default UserApi;
