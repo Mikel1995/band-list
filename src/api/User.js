@@ -25,7 +25,7 @@ const UserApi = {
   },
   getProfile: () => {
     return new Promise((resolve, reject) => {
-      api.get("http://localhost:3000/users/me", {headers: {'Authorization': `Bearer ${localStorage.getItem('TOKEN')}`}})
+      api.get("http://localhost:3000/users/me")
         .then((result) => {
           resolve(result);
         })
@@ -34,6 +34,28 @@ const UserApi = {
         });
     });
   },
+  updateProfile: (values)=> {
+    return new Promise((resolve, reject)=>{
+      api.patch("http://localhost:3000/users/me", values)
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((error) => {
+        reject(error)
+      });
+    })
+  },
+  uploadAvatar: (values)=> {
+    return new Promise((resolve, reject)=>{
+      api.post("http://localhost:3000/users/me/avatar", values)
+      .then((result)=>{
+        resolve(result)
+      })
+      .catch((error)=>{
+        reject(error);
+      })
+    })
+  }
 };
 
 export default UserApi;

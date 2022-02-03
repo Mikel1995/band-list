@@ -4,10 +4,13 @@ import App from "./views/routes";
 import { Router } from "react-router-dom";
 import history from "./history";
 import "antd/dist/antd.css";
+import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.render(
   <Router history={history}>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Router>,
   document.getElementById("root")
 );

@@ -11,6 +11,7 @@
   "author": "Mikel Kasneci",
   "license": "ISC",
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "antd": "^4.16.13",
     "axios": "^0.21.4",
     "css-loader": "^6.2.0",

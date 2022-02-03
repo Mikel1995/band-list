@@ -1,10 +1,13 @@
 import { types, flow, toGenerator } from "mobx-state-tree";
 import { LOGGED_IN, LOGGED_OUT, PENDING_LOGIN } from "../constants";
 import UserApi from "../api/User";
+import showNotification from "../views/common/Notification";
 
 const User = types
   .model("User", {
     username: types.string,
+    name: types.string,
+    age: types.number,
     photo: types.string,
     state: types.enumeration("State", [LOGGED_IN, LOGGED_OUT, PENDING_LOGIN]),
     loginFailed: types.boolean,
@@ -21,6 +24,7 @@ const User = types
       return self.state === PENDING_LOGIN;
     },
   }))
+
   .actions((self) => ({
     login: flow(function* (creds) {
       self.state = PENDING_LOGIN;
@@ -32,6 +36,8 @@ const User = types
           case 200:
             const { user, token } = data;
             self.username = user.email;
+            self.name = user.name;
+            self.age = user.age;
             self.state = LOGGED_IN;
             localStorage.setItem("TOKEN", token);
             break;
@@ -55,6 +61,8 @@ const User = types
             const { user, token } = data;
             localStorage.setItem("TOKEN", token);
             self.username = user.email;
+            self.name = user.name;
+            self.age = user.age;
             self.state = LOGGED_IN;
             break;
           default:
@@ -71,12 +79,52 @@ const User = types
         switch (status) {
           case 200:
             self.username = user.email;
-            self.photo = user.avatar ? `data:image/png;base64, ${user.avatar}` : 'https://picsum.photos/200/300';
+            self.photo = user.avatar
+              ? `data:image/png;base64, ${user.avatar}`
+              : "https://picsum.photos/200/300";
+            self.name = user.name;
+            self.age = user.age;
             break;
           default:
             break;
         }
       } catch (error) {}
+    }),
+    updateProfile: flow(function* (values) {
+      delete values.image;
+      delete values.password;
+      try {
+        const response = yield* toGenerator(UserApi.updateProfile(values));
+        const { data: user, status } = response;
+        console.log(status);
+        switch (status) {
+          case 200:
+            self.name = user.name;
+            self.age = user.age;
+            showNotification("success", "INFORMATION", "Update is completed");
+            break;
+          default:
+            break;
+        }
+      } catch (error) {
+        showNotification("error", "INFORMATION", "Error during this action");
+      }
+    }),
+    uploadImage: flow(function* (values) {
+      try {
+        const response = yield* toGenerator(UserApi.uploadAvatar(values));
+        const { data, status } = response;
+        switch (status) {
+          case 200:
+            showNotification("success", "INFORMATION", "Photo is changed");
+            break;
+
+          default:
+            break;
+        }
+      } catch (error) {
+        console.log('');
+      }
     }),
     logOut: () => {
       self.state = LOGGED_OUT;

@@ -9,7 +9,7 @@ const Login = (props) => {
   const rootStore = useContext(RootStoreContext);
   const { history } = props;
   const { state, login, loginFailed } = rootStore.User;
-  const { openNotification } = rootStore.Notification;
+  const { openNotification } = rootStore.UI.Notification;
 
   const onFinish = (values) => {
     login(values);

@@ -19,9 +19,7 @@ const Notification = types
       self.description = description;
       self.type = type;
       self.isOpen = true;
-
       notification.open({type, message:title, description});
-
     },
 
     closeNotification: () => {

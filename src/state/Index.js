@@ -1,23 +1,30 @@
-import { types } from "mobx-state-tree";
 import React from "react";
 import { LOGGED_OUT } from "../constants";
+import DrawerState from "./ui/DrawerState";
+import Notification from "./ui/Notification";
 import User from "./User";
-import Notification from "./common/Notification";
-const user = types.model({ users: types.array(User) });
 const Store = {
   User: User.create({
     username: '',
     photo:'',
+    name: "",
+    age: 0,
     loginFailed: false,
     state: LOGGED_OUT,
-    registerError: {}
+    registerError: {},
   }),
-  Notification: Notification.create({
-    description: "",
-    title: "",
-    isOpen: false,
-    type: "info"
-  })
+  UI: {
+    DrawerState: DrawerState.create({
+      isVisible: false,
+      title: ""
+    }),
+    Notification: Notification.create({
+      description: "",
+      title: "",
+      isOpen: false,
+      type: "info"
+    })
+  }
 };
 
 export const RootStoreContext = React.createContext(Store);

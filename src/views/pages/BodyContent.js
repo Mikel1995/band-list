@@ -8,7 +8,6 @@ import {
   UploadOutlined,
   LogoutOutlined
 } from "@ant-design/icons";
-import PropTypes from "prop-types";
 import "./BodyContent.css";
 import { Link } from "react-router-dom";
 import SubMenu from "antd/lib/menu/SubMenu";
@@ -23,6 +22,7 @@ const BodyContent = (props) => {
   const rootStore = useContext(RootStoreContext);
   const { content, history } = props;
   const { username, photo, logOut, state, getProfile  } = rootStore.User;
+  const { openDrawer  } = rootStore.UI.DrawerState;
 
   const [collapsed, setcollapsed] = useState(false);
   const toggle = () => {
@@ -48,8 +48,8 @@ const BodyContent = (props) => {
             title="Profile"
             icon={<UserOutlined />}
           >
-            <Menu.Item key="sub-1">
-              <Avatar src={photo} />
+            <Menu.Item key="sub-1" onClick={()=>openDrawer()}>
+              <Avatar src={photo}  />
               {username}
             </Menu.Item>
             <Menu.Item key="sub-2" icon={<LogoutOutlined />} onClick={()=>{logOut()}}>

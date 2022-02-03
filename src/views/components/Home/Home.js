@@ -1,17 +1,17 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { inject, observer } from "mobx-react";
+import React from "react";
+import DrawerLayout from "../../common/DrawerLayout";
+import UserProfile from "../UserProfile/UserProfile";
+import { observer } from "mobx-react";
 
 const Home = (props) => {
-    return (
-        <div>
-            {`User List ` }
-        </div>
-    )
-}
+  return (
+    <div>
+      {`User List `}
+      <DrawerLayout content={<UserProfile />} />
+    </div>
+  );
+};
 
-Home.propTypes = {
+Home.propTypes = {};
 
-}
-
-export default (observer(Home));
+export default observer(Home);
