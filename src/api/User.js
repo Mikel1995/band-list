@@ -55,6 +55,17 @@ const UserApi = {
         reject(error);
       })
     })
+  },
+  getUserList:()=>{
+    return new Promise((resolve, reject)=>{
+      api.get("http://localhost:3000/users")
+      .then((result)=>{
+        resolve(result)
+      })
+      .catch((error)=>{
+        reject(error);
+      })
+    })
   }
 };
 

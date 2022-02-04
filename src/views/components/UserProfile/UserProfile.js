@@ -8,7 +8,6 @@ import {
   Input,
   Image,
   Upload,
-  Modal,
   message,
 } from "antd";
 import { observer } from "mobx-react";
