@@ -5,6 +5,7 @@ import Login from '../components/Login/Login';
 import Home from '../components/Home/Home';
 import BodyContent from '../pages/BodyContent';
 import Signup from '../components/SignUp/Signup';
+import TaskList from '../pages/TasksList/TaskList';
 
 const App = props => {
     return (
@@ -12,8 +13,11 @@ const App = props => {
           <Switch>
             <Route path="/login" component={Login} />
             <Route path="/register" component={Signup} />
-            <Route path="/">
+            <Route path="/" exact={true}>
               <BodyContent content={<Home />} />
+            </Route>
+            <Route path="/tasks">
+              <BodyContent content={<TaskList />} />
             </Route>
           </Switch>
       </Router>

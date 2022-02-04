@@ -4,9 +4,10 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   UserOutlined,
-  VideoCameraOutlined,
   UploadOutlined,
-  LogoutOutlined
+  LogoutOutlined,
+  UsergroupAddOutlined,
+  TableOutlined,
 } from "@ant-design/icons";
 import "./BodyContent.css";
 import { Link } from "react-router-dom";
@@ -18,11 +19,10 @@ import { RootStoreContext } from "../../state/Index";
 const { Header, Sider, Content } = Layout;
 
 const BodyContent = (props) => {
-
   const rootStore = useContext(RootStoreContext);
   const { content, history } = props;
-  const { username, photo, logOut, state, getProfile  } = rootStore.User;
-  const { openDrawer  } = rootStore.UI.DrawerState;
+  const { username, photo, logOut, state, getProfile, getUserTasks } = rootStore.User;
+  const { openDrawer } = rootStore.UI.DrawerState;
 
   const [collapsed, setcollapsed] = useState(false);
   const toggle = () => {
@@ -30,13 +30,13 @@ const BodyContent = (props) => {
   };
 
   useEffect(() => {
-    if (!localStorage.getItem('TOKEN')) {
-      history.push('/login')
+    if (!localStorage.getItem("TOKEN")) {
+      history.push("/login");
       return;
     }
     getProfile();
-  }, [state])
-
+    getUserTasks();
+  }, [state]);
 
   return (
     <Layout>
@@ -48,19 +48,25 @@ const BodyContent = (props) => {
             title="Profile"
             icon={<UserOutlined />}
           >
-            <Menu.Item key="sub-1" onClick={()=>openDrawer()}>
-              <Avatar src={photo}  />
+            <Menu.Item key="sub-1" onClick={() => openDrawer()}>
+              <Avatar src={photo} />
               {username}
             </Menu.Item>
-            <Menu.Item key="sub-2" icon={<LogoutOutlined />} onClick={()=>{logOut()}}>
-              Logout 
+            <Menu.Item
+              key="sub-2"
+              icon={<LogoutOutlined />}
+              onClick={() => {
+                logOut();
+              }}
+            >
+              Logout
             </Menu.Item>
           </SubMenu>
-          <Menu.Item key="1" icon={<UserOutlined />}>
-            nav 1
+          <Menu.Item key="1" icon={<UsergroupAddOutlined />}>
+            <Link to="/">Users List</Link>
           </Menu.Item>
-          <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-            nav 2
+          <Menu.Item key="2" icon={<TableOutlined />}>
+            <Link to="/tasks">Tasks</Link>
           </Menu.Item>
           <Menu.Item key="3" icon={<UploadOutlined />}>
             Z nav 3
@@ -72,22 +78,24 @@ const BodyContent = (props) => {
         </Menu>
       </Sider>
       <Layout className="site-layout">
-        <Header className="site-layout-background" style={{ padding: 0 }}>
+        <Header
+          className="site-layout-background"
+          style={{ paddingLeft: "1vh", fontSize: "5vh" }}
+        >
           {React.createElement(
             collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
             {
               className: "trigger",
-              onClick: toggle
+              onClick: toggle,
             }
           )}
-          Test
         </Header>
         <Content
           className="site-layout-background"
           style={{
             margin: "24px 16px",
             padding: 24,
-            minHeight: 280
+            minHeight: 280,
           }}
         >
           {content}

@@ -12,6 +12,7 @@ const Store = {
     loginFailed: false,
     state: LOGGED_OUT,
     registerError: {},
+    tasks: []
   }),
   UI: {
     DrawerState: DrawerState.create({

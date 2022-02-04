@@ -2,6 +2,7 @@ import { types, flow, toGenerator } from "mobx-state-tree";
 import { LOGGED_IN, LOGGED_OUT, PENDING_LOGIN } from "../constants";
 import UserApi from "../api/User";
 import showNotification from "../views/common/Notification";
+import { message } from "antd";
 
 const User = types
   .model("User", {
@@ -12,6 +13,7 @@ const User = types
     state: types.enumeration("State", [LOGGED_IN, LOGGED_OUT, PENDING_LOGIN]),
     loginFailed: types.boolean,
     registerError: types.frozen({}),
+    tasks: types.frozen([]),
   })
   .views((self) => ({
     get isLoggedIn() {
@@ -123,7 +125,45 @@ const User = types
             break;
         }
       } catch (error) {
-        console.log('');
+        console.log("");
+      }
+    }),
+    getUserTasks: flow(function* () {
+      try {
+        const { status, data = [] } = yield* toGenerator(
+          UserApi.getTasksList()
+        );
+        switch (status) {
+          case 200:
+            self.tasks = data.map((task) => ({
+              key: task._id,
+              completed: task.completed,
+              description: task.description,
+              owner: self.name,
+            }));
+            break;
+          default:
+            showNotification("error", "INFORMATION", "Unable to get tasks");
+            break;
+        }
+      } catch (error) {
+        showNotification("error", "INFORMATION", "Unable to get tasks");
+      }
+    }),
+    updateTask: flow(function* (taskId, values) {
+      try {
+        const { status } = yield* toGenerator(
+          UserApi.updateTask(taskId, values)
+        );
+        switch (status) {
+          case 200:
+            message.success("Task successfully updated");
+            break;
+          default:
+            break;
+        }
+      } catch (error) {
+        showNotification("error", "INFORMATION", "Unale to update the task");
       }
     }),
     logOut: () => {
