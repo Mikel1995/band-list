@@ -7,7 +7,6 @@ const DrawerState = types
   })
   .actions((self) => ({
     openDrawer: () => {
-      console.log('goes here');
       self.isVisible = true;
     },
     closeDrawer: () => {

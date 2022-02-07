@@ -1,6 +1,7 @@
 import React from "react";
 import { LOGGED_OUT } from "../constants";
 import DrawerState from "./ui/DrawerState";
+import ModalState from "./ui/ModalState";
 import Notification from "./ui/Notification";
 import User from "./User";
 const Store = {
@@ -24,6 +25,11 @@ const Store = {
       title: "",
       isOpen: false,
       type: "info"
+    }),
+    Modal:ModalState.create({
+      isOpen: false,
+      title: '',
+      content: undefined
     })
   }
 };

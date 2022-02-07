@@ -166,10 +166,47 @@ const User = types
             );
             break;
           default:
+            showNotification(
+              "error",
+              "INFORMATION",
+              "Unable to update the task"
+            );
             break;
         }
       } catch (error) {
-        showNotification("error", "INFORMATION", "Unale to update the task");
+        showNotification("error", "INFORMATION", "Unable to update the task");
+      }
+    }),
+    addNewTask: flow(function* (values) {
+      try {
+        const { data, status } = yield* toGenerator(UserApi.addTask(values));
+
+        switch (status) {
+          case 201:
+            self.tasks = [
+              ...self.tasks,
+              {
+                _id: data._id,
+                key: data._id,
+                completed: data.completed,
+                description: data.description,
+                owner: self.name,
+              },
+            ];
+
+            message.info("Task is added!");
+            break;
+
+          default:
+            showNotification(
+              "error",
+              "INFORMATION",
+              "Unable to update the task"
+            );
+            break;
+        }
+      } catch (error) {
+        showNotification("error", "INFORMATION", "Unable to update the task");
       }
     }),
     logOut: () => {

@@ -97,6 +97,17 @@ const UserApi = {
         });
     });
   },
+  addTask: (values) => {
+    return new Promise((resolve, reject)=>{
+      api.post('http://localhost:3000/tasks', values)
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    })
+  }
 };
 
 export default UserApi;
