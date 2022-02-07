@@ -3,6 +3,7 @@ import { LOGGED_IN, LOGGED_OUT, PENDING_LOGIN } from "../constants";
 import UserApi from "../api/User";
 import showNotification from "../views/common/Notification";
 import { message } from "antd";
+import history from "../history";
 
 const User = types
   .model("User", {
@@ -26,7 +27,6 @@ const User = types
       return self.state === PENDING_LOGIN;
     },
   }))
-
   .actions((self) => ({
     login: flow(function* (creds) {
       self.state = PENDING_LOGIN;
@@ -37,11 +37,12 @@ const User = types
         switch (status) {
           case 200:
             const { user, token } = data;
+            localStorage.setItem("TOKEN", token);
             self.username = user.email;
             self.name = user.name;
             self.age = user.age;
             self.state = LOGGED_IN;
-            localStorage.setItem("TOKEN", token);
+            history.go('/')
             break;
           default:
             self.state = LOGGED_OUT;
@@ -223,6 +224,7 @@ const User = types
       }
     }),
     logOut: () => {
+      history.go('/login');
       self.state = LOGGED_OUT;
       self.username = "";
       self.photo = "";

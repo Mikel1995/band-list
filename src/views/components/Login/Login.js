@@ -4,6 +4,8 @@ import { observer } from "mobx-react-lite";
 import { parseErrorMessage } from "../../../utils/Index";
 import { PENDING_LOGIN } from "../../../constants";
 import { RootStoreContext } from "../../../state/Index";
+import { withTranslation } from "react-i18next";
+import { t } from "i18next";
 
 const Login = (props) => {
   const rootStore = useContext(RootStoreContext);
@@ -17,7 +19,7 @@ const Login = (props) => {
 
   const onFinishFailed = (errorInfo) => {
     const errorMessage = parseErrorMessage(errorInfo);
-    openNotification("Unable To Login", errorMessage, "error");
+    openNotification(t('Login.unableToLogin'), errorMessage, "error");
   };
 
   useEffect(() => {
@@ -29,8 +31,8 @@ const Login = (props) => {
   useEffect(() => {
     if (loginFailed) {
       openNotification(
-        "Unable To Login",
-        "Please verify you credencials",
+        t('Login.unableToLogin'),
+        t('Login.verifyCredencial'),
         "error"
       );
     }
@@ -48,21 +50,21 @@ const Login = (props) => {
           autoComplete="off"
         >
           <Form.Item
-            label="Username"
+            label={t('common.username')}
             name="email"
-            rules={[{ required: true, message: "Please input your email!" }]}
+            rules={[{ required: true, message: t('Login.usernameRule') }]}
           >
             <Input />
           </Form.Item>
 
           <Form.Item
-            label="Password"
+            label={t('common.password')}
             name="password"
             rules={[
               {
                 required: true,
                 min: 6,
-                message: "Please input your password!",
+                message: t('Login.usernamePassword'),
               },
             ]}
           >
@@ -73,7 +75,7 @@ const Login = (props) => {
             name="remember"
             valuePropName="checked"
           >
-            <Checkbox>Remember me</Checkbox>
+            <Checkbox>{t('Login.rememberMe')}</Checkbox>
           </Form.Item>
 
           <Form.Item >
@@ -82,17 +84,17 @@ const Login = (props) => {
               type="primary"
               htmlType="submit"
             >
-              Login
+              {t('Login.loginButton')}
             </Button>
             <br />
-            Or{" "}
+            {t('common.or')}
             <a
               onClick={() => {
                 history.push("/register");
               }}
               href=""
             >
-              register now!
+              {t('Login.registerNow')}
             </a>
           </Form.Item>
         </Form>
@@ -103,4 +105,4 @@ const Login = (props) => {
 
 Login.propTypes = {};
 
-export default observer(Login);
+export default observer(withTranslation()(Login));
