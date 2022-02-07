@@ -9,8 +9,8 @@ const TaskList = (props) => {
   const { tasks, updateTask } = rootStore.User;
 
   const handleChangeSwich = (value, taskId) => {
-    updateTask(taskId, {completed: value})
-  }
+    updateTask(taskId, { completed: value });
+  };
 
   const columns = [
     {
@@ -21,7 +21,12 @@ const TaskList = (props) => {
       title: "Is Completed",
       dataIndex: "completed",
       render: (text, record, index) => {
-        return <Switch defaultChecked={record.completed} onChange={(value)=>handleChangeSwich(value, record.key)} />;
+        return (
+          <Switch
+            checked={record.completed}
+            onChange={(value) => handleChangeSwich(value, record.key)}
+          />
+        );
       },
     },
     {
@@ -29,7 +34,7 @@ const TaskList = (props) => {
       dataIndex: "owner",
     },
   ];
-
+  
   return (
     <div>
       <Table columns={columns} dataSource={tasks}></Table>

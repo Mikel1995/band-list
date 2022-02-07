@@ -136,6 +136,7 @@ const User = types
         switch (status) {
           case 200:
             self.tasks = data.map((task) => ({
+              _id: task._id,
               key: task._id,
               completed: task.completed,
               description: task.description,
@@ -152,12 +153,17 @@ const User = types
     }),
     updateTask: flow(function* (taskId, values) {
       try {
-        const { status } = yield* toGenerator(
+        const { status, data } = yield* toGenerator(
           UserApi.updateTask(taskId, values)
         );
         switch (status) {
           case 200:
             message.success("Task successfully updated");
+            self.tasks = self.tasks.map((task) =>
+              task._id === data._id
+                ? { ...task, completed: data.completed }
+                : task
+            );
             break;
           default:
             break;
