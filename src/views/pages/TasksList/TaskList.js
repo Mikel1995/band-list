@@ -1,24 +1,15 @@
 import React, { useContext } from "react";
-import {
-  Table,
-  Switch,
-  Button,
-  Modal,
-  Input,
-  Form,
-} from "antd";
+import { Table, Switch, Button, Modal, Input, Form, Popconfirm } from "antd";
 import { RootStoreContext } from "../../../state/Index";
 import { observer } from "mobx-react-lite";
+import { DeleteOutlined } from "@ant-design/icons";
 
 const TaskList = (props) => {
-
-  
   const [form] = Form.useForm();
-
 
   const rootStore = useContext(RootStoreContext);
 
-  const { tasks, updateTask, addNewTask } = rootStore.User;
+  const { tasks, updateTask, addNewTask, deleteTask } = rootStore.User;
   const { openModal, closeModal, isOpen, title } = rootStore.UI.Modal;
 
   const handleChangeSwich = (value, taskId) => {
@@ -26,9 +17,10 @@ const TaskList = (props) => {
   };
 
   const onSubmitMethod = () => {
-    addNewTask(form.getFieldValue())
+    addNewTask(form.getFieldValue());
     closeModal();
-  }
+  };
+
 
   const columns = [
     {
@@ -51,18 +43,29 @@ const TaskList = (props) => {
       title: "Created By",
       dataIndex: "owner",
     },
+    {
+      title: "Action",
+      render: (text, record, index) => {
+        return (
+          <Popconfirm title="Are you sure" okText="Yes" cancelText="No" onConfirm={()=>deleteTask(record._id)}>
+            <Button icon={<DeleteOutlined />}></Button>
+          </Popconfirm>
+        );
+      },
+    },
   ];
 
   const modalContent = (
-    <Form form={form} labelCol={{ span: 6 }} wrapperCol={{ span: 14 }} onFinish={onSubmitMethod}>
-      <Form.Item label="Task Description" name="descrsiption">
+    <Form
+      form={form}
+      labelCol={{ span: 6 }}
+      wrapperCol={{ span: 14 }}
+      onFinish={onSubmitMethod}
+    >
+      <Form.Item label="Task Description" name="description">
         <Input />
       </Form.Item>
-      <Form.Item
-        valuePropName="checked"
-        label="Is Completed"
-        name="completed"
-      >
+      <Form.Item valuePropName="checked" label="Is Completed" name="completed">
         <Switch />
       </Form.Item>
     </Form>
@@ -81,7 +84,13 @@ const TaskList = (props) => {
       </Button>
       <Table columns={columns} dataSource={tasks}></Table>
 
-      <Modal visible={isOpen} title={title} onCancel={closeModal} okText="Save Task" onOk={onSubmitMethod}>
+      <Modal
+        visible={isOpen}
+        title={title}
+        onCancel={closeModal}
+        okText="Save Task"
+        onOk={onSubmitMethod}
+      >
         {modalContent}
       </Modal>
     </div>

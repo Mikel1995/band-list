@@ -1,3 +1,4 @@
+import { values } from "mobx";
 import api from "../api";
 
 const UserApi = {
@@ -100,6 +101,17 @@ const UserApi = {
   addTask: (values) => {
     return new Promise((resolve, reject)=>{
       api.post('http://localhost:3000/tasks', values)
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    })
+  },
+  deleteTask: (taskId) => {
+    return new Promise((resolve, reject)=>{
+      api.delete(`http://localhost:3000/task/${taskId}`)
       .then((result) => {
         resolve(result);
       })

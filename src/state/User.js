@@ -180,7 +180,6 @@ const User = types
     addNewTask: flow(function* (values) {
       try {
         const { data, status } = yield* toGenerator(UserApi.addTask(values));
-
         switch (status) {
           case 201:
             self.tasks = [
@@ -193,10 +192,8 @@ const User = types
                 owner: self.name,
               },
             ];
-
-            message.info("Task is added!");
+            message.success("Task is added!");
             break;
-
           default:
             showNotification(
               "error",
@@ -207,6 +204,22 @@ const User = types
         }
       } catch (error) {
         showNotification("error", "INFORMATION", "Unable to update the task");
+      }
+    }),
+    deleteTask: flow(function* (taskId){
+      
+      try {
+        const { status } = yield* toGenerator(UserApi.deleteTask(taskId));
+        switch (status) {
+          case 200:
+            self.tasks =  self.tasks.filter((task) => (task._id !== taskId))
+            message.success('Task deleted')
+            break;
+          default:
+            throw new Error();
+        }
+      } catch (error) {
+        showNotification("error", "INFORMATION", "Unable to delete the task");
       }
     }),
     logOut: () => {
